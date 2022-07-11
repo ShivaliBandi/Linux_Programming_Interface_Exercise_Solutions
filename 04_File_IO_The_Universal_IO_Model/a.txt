@@ -8,27 +8,42 @@ int main(int argc,char **argv)
 {
     char filemode;
     int ret=-1;
-    ret=getopt(argc,argv,"a:");
-    
-    switch (ret)
+    if(argc==4)
     {
-        case 'a':
-           filemode='a';
-            break;
-        
-        case '?':
-            filemode='w';
-            break;
-    }
-    
-
-    assert(argc>1);
-   
+        ret=getopt(argc,argv,"a:");
+        switch (ret)
+        {
+            case 'a':
+            filemode='a';
+                break;
+            
+            default:
+                filemode='w';
+                break;
+        }
         ret=TeeCommandImplementation(filemode,argv[2],argv[3]);
         if(ret==1)
             printf("\nData appended successfully..!\n");
         else
             printf("Unable to write data into file successfully");
+    }
+    else
+    {
+        if(argc<=2 && argc>=4)
+        {
+            printf("ERROR:In valid number of argument\n**Usage***\n when use -a it will append sourceFile to destinationFile is not used -a then it will overwrite sourceFile to DestinationFile\n Run program:./executable6ˆÈküName -a sourcefilename destinationFilename\n or \n ./executablename sourceFilename destinationFilename\n");
+        }
+        else
+        {
+            ret=TeeCommandImplementation('w',argv[1],argv[2]);
+        if(ret==1)
+            printf("\nData appended successfully..!\n");
+        else
+            printf("Unable to write data into file successfully");
+        }
+        
+    }
+    
     
 }
 int TeeCommandImplementation(const char filemode,const char *inputfileName,const char *outputfileName)
